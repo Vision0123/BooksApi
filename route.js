@@ -19,13 +19,19 @@ router.post("/books",async (req,res)=>{
     res.send(book);
 });
 
-router.put("/books/:id",async (req,res)=>{
-    let id = req.params.id;
-    let book = await Book.findById(id);
+router.put("/books/:id",async(req,res)=>{
+    const book =await Book.findOne({_id:req.params.id});
     book.set(req.body);
     await book.save();
     res.send(book);
-    
+});
+
+router.patch("/books/:id",async(req,res)=>{
+    const book = await Book.findOne({_id:req.params.id});
+    book.name = req.body.name;
+
+    await book.save();
+    res.send(book);
 });
 
 router.delete("/books/:id",async(req,res)=>{
