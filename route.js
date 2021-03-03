@@ -4,19 +4,30 @@ const router = express.Router();
 
 
 router.get("/books",async (req,res)=>{
-    const book = await Book.find();
-    res.send(book);
+    try {
+        const book = await Book.find();
+        res.send(book);
+        
+    } catch (error) {
+        res.send(error);
+    }
 });
 
 router.post("/books",async (req,res)=>{
 
-    const book = new Book({
-        name:req.body.name,
-        qty:req.body.qty
+    try {
+        const book = new Book({
+            name:req.body.name,
+            qty:req.body.qty
+            
+        });
+        await book.save();
+        res.send(book);
         
-    });
-    await book.save();
-    res.send(book);
+    } catch (error) {
+        res.status(404).send(error);
+        
+    }
 });
 
 router.put("/books/:id",async(req,res)=>{
